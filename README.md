@@ -1,124 +1,132 @@
-# AITradeGame - Open Source AI Trading Simulator
+# AITradeGame - AI加密货币交易系统
 
-[English](README.md) | [中文](README_ZH.md)
+AITradeGame是一个基于人工智能的加密货币自动交易系统，它能够根据市场数据和账户状态自动做出交易决策。
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![Flask](https://img.shields.io/badge/flask-3.0+-green.svg)](https://flask.palletsprojects.com/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+## 项目结构
 
-AITradeGame is an AI trading simulator that supports both local and online versions.
-
-Provides an online version with interactive features and leaderboards.
-
-Local version stores all data on your computer, no cloud storage, no tracking.
-
-Includes a Windows one-click standalone executable that runs without installation.
-
-## Features
-
-### Desktop Version (Local)
-
-AI-driven trading strategies based on large language models, compatible with OpenAI, DeepSeek, Claude, and other models. Leveraged portfolio management with ECharts visualizations. 100% privacy with all data stored in local database. Trading fee configuration supported to simulate real trading environment.
-
-**Latest Features:**
-- API Provider Management: Unified management of multiple AI service provider API configurations
-- Smart Model Selection: Automatically fetch available model lists for each provider
-- Aggregated View: View aggregated assets and performance comparison across all models
-- System Settings: Configurable trading frequency and fee rates
-
-### Online Version (Public)
-
-Leaderboard functionality to compete with AI enthusiasts worldwide. Real-time rankings display providing performance comparisons and analysis. Auto-sync and background operation enabling seamless multi-device experience.
-
-## Quick Start
-
-### Try Online Version
-
-Launch the online version at https://aitradegame.com without any installation.
-
-### Desktop Version
-
-Download AITradeGame.exe from GitHub releases. Double-click the executable to run. The interface will open automatically. Start adding AI models and begin trading.
-
-Alternatively, clone the repository from GitHub. Install dependencies with pip install -r requirements.txt. Run the application with python app.py and visit http://localhost:5000.
-
-### Docker Deployment
-
-You can also run AITradeGame using Docker:
-
-**Using docker-compose (recommended):**
-```bash
-# Build and start the container
-docker-compose up -d
-
-# Access the application at http://localhost:5000
+```
+AITradeGame/
+├── ai_trader.py          # AI交易器模块
+├── app.py                # Flask应用主文件
+├── config.example.py     # 配置文件示例
+├── config.py             # 实际配置文件（需要用户创建）
+├── database.py           # 数据库操作模块
+├── market_data.py        # 市场数据获取模块
+├── trading_engine.py     # 交易引擎模块
+├── version.py            # 版本信息文件
+├── requirements.txt      # 项目依赖
+└── README.md             # 项目说明文档
 ```
 
-**Using docker directly:**
-```bash
-# Build the image
-docker build -t aitradegame .
+## 功能特性
 
-# Run the container
-docker run -d -p 5000:5000 -v $(pwd)/data:/app/data aitradegame
+1. **AI驱动的交易决策**：使用AI模型分析市场数据并做出交易决策
+2. **多币种支持**：支持BTC、ETH、SOL等多种主流加密货币交易
+3. **实时市场数据**：从Binance和CoinGecko获取实时市场数据
+4. **技术指标计算**：计算SMA、RSI等常用技术指标辅助决策
+5. **账户管理**：跟踪账户持仓、现金余额和总价值
+6. **交易执行**：自动执行买入、卖出和平仓操作
+7. **交易费用计算**：准确计算交易费用并从账户中扣除
+8. **数据持久化**：使用SQLite数据库存储交易记录和账户信息
+9. **Web界面**：提供Web界面查看账户状态和交易历史
+10. **可配置性**：通过配置文件灵活调整系统参数
 
-# Access the application at http://localhost:5000
-```
+## 安装和配置
 
-The data directory will be created automatically to store the SQLite database. To stop the container, run `docker-compose down`.
+### 环境要求
 
-## Configuration
+- Python 3.7+
+- pip包管理器
 
-### API Provider Setup
-First, add AI service providers:
-1. Click the "API Provider" button
-2. Enter provider name, API URL, and API key
-3. Manually input available models or click "Fetch Models" to auto-fetch
-4. Click save to complete configuration
+### 安装步骤
 
-### Adding Trading Models
-After configuring providers, add trading models:
-1. Click the "Add Model" button
-2. Select a configured API provider
-3. Choose a specific model from the dropdown
-4. Enter display name and initial capital
-5. Click submit to start trading
+1. 克隆项目代码：
+   ```bash
+   git clone <repository_url>
+   cd AITradeGame
+   ```
 
-### System Settings
-Click the "Settings" button to configure:
-- Trading Frequency: Control AI decision interval (1-1440 minutes)
-- Trading Fee Rate: Commission rate per trade (default 0.1%)
+2. 安装依赖：
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Supported AI Models
+3. 创建配置文件：
+   ```bash
+   cp config.example.py config.py
+   ```
 
-Supports all OpenAI-compatible APIs. This includes OpenAI models like gpt-4 and gpt-3.5-turbo, DeepSeek models including deepseek-chat, Claude models through OpenRouter, and any other services compatible with OpenAI API format. More protocols are being added.
+4. 根据需要修改`config.py`中的配置项
 
-## Usage
+### 配置说明
 
-Start the server by running AITradeGame.exe or python app.py. Add AI model configuration through the web interface at http://localhost:5000. The system automatically begins trading simulation based on your configuration. Trading fees are charged for each open and close position according to the set rate, ensuring AI strategies operate under realistic cost conditions.
+在`config.py`文件中，可以配置以下参数：
 
-## Privacy and Security
+- **服务器配置**：主机地址、端口号、调试模式
+- **数据库配置**：SQLite数据库文件路径
+- **交易设置**：自动交易开关、交易间隔、交易币种列表
+- **市场数据配置**：API缓存时间、API URL
+- **前端刷新频率**：市场数据和投资组合数据的刷新频率
+- **交易费率**：交易费率设置（默认0.1%双向收费）
 
-All data is stored in the AITradeGame.db SQLite file in the same directory as the executable. No external servers are contacted except your specified AI API endpoints. No user accounts or login required - everything runs locally.
+## 使用方法
 
-## Development
+1. 启动应用：
+   ```bash
+   python app.py
+   ```
 
-Development requires Python 3.9 or later. Internet connection is needed for market data and AI API calls.
+2. 访问Web界面：
+   在浏览器中打开`http://localhost:5000`
 
-Install all dependencies with: pip install -r requirements.txt
+3. 查看和管理交易：
+   - 在Web界面中可以查看账户状态、持仓情况和交易历史
+   - 可以通过配置文件控制是否启用自动交易
 
-## Contributing
+## 核心模块说明
 
-Community contributions are welcome.
+### AI交易器 (ai_trader.py)
 
-## Disclaimer
+AI交易器负责根据市场数据和账户信息做出交易决策。它通过构建提示信息并调用AI模型来获取交易指令。
 
-This is a simulated trading platform for testing AI models and strategies. It is not real trading and no actual money is involved. Always conduct your own research and analysis before making investment decisions. No warranties are provided regarding trading outcomes or AI performance.
+### 交易引擎 (trading_engine.py)
 
-## Links
+交易引擎是系统的核心，负责执行完整的交易循环：
+1. 获取市场状态
+2. 构建账户信息
+3. 调用AI进行交易决策
+4. 执行交易决策
+5. 记录账户价值
 
-Online version with leaderboard and social features: https://aitradegame.com
+### 市场数据获取器 (market_data.py)
 
-Desktop builds and releases: https://github.com/chadyi/AITradeGame/releases/tag/main
+市场数据获取器负责从Binance和CoinGecko API获取实时市场数据，并计算技术指标。
 
-Source code repository: https://github.com/chadyi/AITradeGame
+### 数据库操作 (database.py)
+
+数据库操作模块封装了所有与SQLite数据库交互的方法，包括：
+- 初始化数据库
+- 管理API提供商和交易模型
+- 管理投资组合和持仓
+- 记录交易和对话历史
+- 跟踪账户价值变化
+
+### Web应用 (app.py)
+
+Web应用模块基于Flask框架，提供了RESTful API和Web界面：
+- 获取市场数据和账户信息
+- 管理交易模型和提供商
+- 查看交易历史和账户价值图表
+- 控制自动交易开关
+
+## 贡献
+
+欢迎提交Issue和Pull Request来改进这个项目。
+
+## 许可证
+
+[待定]
+
+## 联系方式
+
+项目作者：chadyi
