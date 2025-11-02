@@ -90,3 +90,63 @@ build_package.py
 build_all.py
 AITradeGame.db.backup
 .claude/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.jpi
+*.hpi
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+.out/
+.idea/
+
+# Eclipse
+.settings/
+.metadata/
+.classpath
+.project
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.keystore
+nbactions.xml
+nb-configuration.xml
+
+# VS Code Java
+.vscode/
+*.code-workspace
