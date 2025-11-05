@@ -65,7 +65,7 @@ docker run -d -p 5000:5000 -v $(pwd)/data:/app/data aitradegame
 # 访问应用程序 http://localhost:5000
 ```
 
-系统会自动创建 data 目录来存储 SQLite 数据库。要停止容器，请运行 `docker-compose down`。
+系统会自动创建 data 目录来存储 MySQL 数据库。要停止容器，请运行 `docker-compose down`。
 
 ## 配置
 
@@ -99,7 +99,7 @@ docker run -d -p 5000:5000 -v $(pwd)/data:/app/data aitradegame
 
 ## 隐私与安全
 
-所有数据都存储在可执行文件同一目录中的 AITradeGame.db SQLite 文件中。除了您指定的 AI API 端点外，不联系任何外部服务器。不需要用户账户或登录，一切都在本地运行。
+所有数据都存储在 MySQL 数据库中。除了您指定的 AI API 端点外，不联系任何外部服务器。不需要用户账户或登录，一切都在本地运行。
 
 ## 开发
 

@@ -22,7 +22,7 @@ PORT = 5000
 DEBUG = True
 
 # 数据库配置
-# DATABASE_PATH: SQLite数据库文件的路径
+# DATABASE_CONFIG: MySQL数据库连接配置
 DATABASE_PATH = 'aitrade.db'
 
 # 交易设置

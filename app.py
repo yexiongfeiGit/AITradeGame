@@ -12,7 +12,7 @@ import sqlite3
 import threading
 import webbrowser
 from datetime import datetime
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 
 # 导入项目模块
@@ -43,7 +43,14 @@ def init_components():
     global db, market_fetcher, trading_engines, ai_traders
     
     # 初始化数据库连接
-    db = Database(Config.DATABASE_PATH)
+    db_config = Config.DATABASE_CONFIG
+    db = Database(
+        host=db_config['host'],
+        port=db_config['port'],
+        user=db_config['user'],
+        password=db_config['password'],
+        database=db_config['database']
+    )
     db.init_db()  # 创建数据库表
     
     # 初始化市场数据获取器
@@ -71,6 +78,15 @@ def init_components():
         )
 
 # ==================== API路由定义 ====================
+
+@app.route('/')
+def index():
+    """
+    主页路由
+    
+    返回前端页面
+    """
+    return render_template('index.html')
 
 @app.route('/api/providers', methods=['GET'])
 def get_providers():
@@ -391,6 +407,22 @@ def check_update():
         # 处理检查更新过程中的异常
         print(f"Update check failed: {e}")
         return jsonify({'has_update': False, 'error': str(e)})
+    
+
+@app.route('/api/test/get-model', methods=['GET'])
+def testGetModel():
+    """
+    测试获取模型信息
+    
+    验证是否能够成功获取模型的详细信息。
+    
+    Returns:
+        JSON: 包含模型信息的响应对象
+    """
+    model_id = 'BTC'  # 测试用的模型ID
+    model = db.get_model(model_id)
+    return jsonify(model)
+
 
 def compare_versions(v1, v2):
     """

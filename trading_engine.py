@@ -73,7 +73,7 @@ class TradingEngine:
                 return False
             
             # 2. 构建账户信息
-            account_info = self._build_account_info()
+            account_info = self.build_account_info()
             
             # 3. 格式化提示信息
             prompt = self._format_prompt(market_state, account_info)
@@ -121,7 +121,7 @@ class TradingEngine:
         
         return market_data
     
-    def _build_account_info(self) -> Dict:
+    def build_account_info(self) -> Dict:
         """
         构建账户信息
         
@@ -130,9 +130,13 @@ class TradingEngine:
         Returns:
             Dict: 包含账户信息的字典
         """
+
+
         # 获取账户持仓
+        print(f"model_id: {self.model_id}")
+
         portfolio = self.db.get_portfolio(self.model_id)
-        
+        print(f"portfolio: {portfolio}")
         # 获取现金余额
         cash_balance = portfolio.get('cash', 0)
         

@@ -23,14 +23,18 @@ class MarketDataFetcher:
     并提供了缓存机制和技术指标计算功能。
     """
     
-    def __init__(self):
+    def __init__(self, cache_duration=5, api_url="https://api.binance.com"):
         """
         初始化市场数据获取器
         
         设置API端点、缓存变量和缓存过期时间。
+        
+        Args:
+            cache_duration (int): 缓存持续时间（秒），默认为5秒
+            api_url (str): Binance API的基础URL，默认为"https://api.binance.com"
         """
         # Binance API端点
-        self.binance_base_url = "https://api.binance.com"
+        self.binance_base_url = api_url
         
         # CoinGecko API端点
         self.coingecko_base_url = "https://api.coingecko.com/api/v3"
@@ -38,7 +42,7 @@ class MarketDataFetcher:
         # 缓存变量
         self._cache = {}
         self._cache_expiry = {}
-        self.cache_duration = 5  # 缓存持续时间（秒）
+        self.cache_duration = cache_duration  # 缓存持续时间（秒）
     
     def _is_cache_valid(self, key: str) -> bool:
         """
@@ -368,6 +372,43 @@ class MarketDataFetcher:
         }
         print(f"合并{coin}数据及指标: {result}")
         return result
+
+    def get_prices(self) -> Dict[str, Dict]:
+        """
+        获取所有交易币种的当前价格信息
+        
+        从配置中获取交易币种列表，然后为每个币种获取当前价格和24小时变化率。
+        
+        Returns:
+            Dict[str, Dict]: 以币种为键，价格信息为值的字典
+        """
+        from config import Config
+        
+        prices = {}
+        for coin in Config.COINS:
+            try:
+                price_info = self.get_current_price(coin)
+                if price_info:
+                    # 只保留需要的字段
+                    prices[coin] = {
+                        "price": price_info["price"],
+                        "change_24h": price_info["change_24h"]
+                    }
+                else:
+                    # 如果获取失败，添加默认值
+                    prices[coin] = {
+                        "price": 0,
+                        "change_24h": 0
+                    }
+            except Exception as e:
+                print(f"获取{coin}价格时出错: {e}")
+                # 出错时添加默认值
+                prices[coin] = {
+                    "price": 0,
+                    "change_24h": 0
+                }
+        
+        return prices
 
 # 创建全局市场数据获取器实例
 market_fetcher = MarketDataFetcher()
